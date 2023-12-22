@@ -1,6 +1,5 @@
 <script setup>
 import {ref, watch} from 'vue';
-// import TheWelcome from '../components/TheWelcome.vue'
 import { onMounted } from 'vue';
 import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
@@ -12,27 +11,21 @@ import { Vector, TileWMS } from 'ol/source';
 import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-import BingMaps from 'ol/source/BingMaps.js';
 import XYZ from 'ol/source/XYZ.js';
 // import proj from 'ol/proj.js';
 import * as proj from 'ol/proj';
 import ScaleLine from 'ol/control/ScaleLine'
-import Control from 'ol/control/Control';
 import Zoom from 'ol/control/Zoom';
 import ZoomSlider from 'ol/control/ZoomSlider';
 import Rotate from 'ol/control/Rotate';
 import FullScreen from 'ol/control/FullScreen';
 import MousePosition from 'ol/control/MousePosition';
 import * as olCoordinate from 'ol/coordinate';
-import Select from 'ol/interaction/Select';
-import Modify from 'ol/interaction/Modify';
 import {defaults as interactionDefaults} from 'ol/interaction/defaults';
-
 import Draw from 'ol/interaction/Draw';
 import {defaults} from 'ol/control/defaults';
-import GeoJSON from 'ol/format/GeoJSON.js';
 
-
+let map = null;
 const selectVal = ref('Point');
 const options = [
   {
@@ -48,13 +41,6 @@ const options = [
     label: '面',
   }
 ]
-
-let map = null;
-let source = null;
-onMounted(()=>{
-  map = createMap()
-  window.map = map;
-});
 
 
 const getStyle = function () {
@@ -112,7 +98,7 @@ const getFeatures = function(){
 
   return features;
 }
-
+const source = new Vector({wrapX: false});
 const getDraw = function (type = 'Point'){
   return new Draw({
     source: source,
@@ -128,12 +114,6 @@ watch(selectVal, (newVal, oldVal)=>{
 })
 
 const createMap = function (){
-  const featureLayer = new VectorLayer({
-    source: new Vector({
-      features: getFeatures()
-    })
-  })
-
   const titleLayer = new TileLayer({
     source: new XYZ({
       attributions:
@@ -144,63 +124,15 @@ const createMap = function (){
           'World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
     }),
   });
-
-  // 添加矢量图层
-  let vectorLayer1 = new VectorLayer({
-    title: 'Earthquakes',
-    source: new Vector({
-      url: '/src/data/layers/7day-M2.5.json',
-      format: new GeoJSON()
-    }),
-    style: new Style({
-      image: new Circle({
-        radius: 3,
-        fill: new Fill({color: 'red'})
-      })
-    })
-  })
-  // 矢量数据在客户端渲染成图像。该图层类型在平移和缩放期间提供了出色的性能，但是点符号和文本始终与视图一同旋转，
-  // 并且在缩放动画期间像素被缩放
-  source = new Vector({
-    attributions: 'VectorImageLayer',
-    url: '/src/data/layers/7day-M2.5.json',
-    format: new GeoJSON()
-  });
-  let vectorLayer2 = new VectorImageLayer({
-    title: 'Earthquakes2',
-    source,
-    style: new Style({
-      image: new Circle({
-        radius: 3,
-        fill: new Fill({color: 'blue'})
-      })
-    })
-  });
-
-  const select = new Select({
-    style: new Style({
-      image: new Circle({
-        radius: 10,
-        fill: new Fill({
-          color: '#FF0000'
-        }),
-        stroke: new Stroke({
-          color: '#000000'
-        })
-      }),
-      zIndex: 1000
-    })
-  });
-
-  const modify = new Modify({
-    features: select.getFeatures()
+  const vector = new VectorLayer({
+    source: source,
   });
 
   const map = new Map({
     target: 'map',
     layers: [
       titleLayer,
-      vectorLayer2
+      vector
     ],
     view: new View({
       // 用于将经度和纬度坐标（经纬度）转换为地图投影坐标
@@ -225,17 +157,20 @@ const createMap = function (){
         ]),
     // 交互类
     interactions: interactionDefaults().extend([
-      select,
-      modify,
-      // draw
+      draw
     ])
   });
 
   console.log('map', map);
+  console.log(map.getAllLayers()[1].getSource().getFeatures());
 
   return map;
 }
 
+onMounted(()=>{
+  map = createMap()
+  window.map = map;
+});
 
 </script>
 
@@ -254,7 +189,6 @@ const createMap = function (){
   <div id="map">
 
   </div>
-<!--  <div id="scale-line" class="scale-line"></div>-->
 </template>
 
 <style scoped>
@@ -263,9 +197,3 @@ const createMap = function (){
   border: 1px solid blue;
 }
 </style>
-<!--<style>-->
-<!--  .ol-scale-line, .ol-scale-line:not([ie8andbelow]) {-->
-<!--    background: black;-->
-<!--    padding: 5px;-->
-<!--  }-->
-<!--</style>-->
