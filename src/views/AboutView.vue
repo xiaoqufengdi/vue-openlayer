@@ -29,23 +29,6 @@ import {defaults as interactionDefaults} from 'ol/interaction/defaults';
 import {defaults} from 'ol/control/defaults';
 import GeoJSON from 'ol/format/GeoJSON.js';
 
-
-const selectVal = ref('Point');
-const options = [
-  {
-    value: 'Point',
-    label: '点',
-  },
-  {
-    value: 'LineString',
-    label: '线',
-  },
-  {
-    value: 'Polygon',
-    label: '面',
-  }
-]
-
 let map = null;
 let source = null;
 onMounted(()=>{
@@ -241,9 +224,3 @@ const createMap = function (){
     border: 1px solid blue;
   }
 </style>
-<!--<style>-->
-<!--  .ol-scale-line, .ol-scale-line:not([ie8andbelow]) {-->
-<!--    background: black;-->
-<!--    padding: 5px;-->
-<!--  }-->
-<!--</style>-->

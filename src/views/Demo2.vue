@@ -12,7 +12,6 @@ import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import XYZ from 'ol/source/XYZ.js';
-// import proj from 'ol/proj.js';
 import * as proj from 'ol/proj';
 import ScaleLine from 'ol/control/ScaleLine'
 import Zoom from 'ol/control/Zoom';
@@ -115,7 +114,7 @@ watch(selectVal, (newVal, oldVal)=>{
 
 const createMap = function (){
   const titleLayer = new TileLayer({
-    source: new XYZ({
+    source: new XYZ({  // arcgis在线地图
       attributions:
           'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/' +
           'rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
