@@ -11,7 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <el-col :span="24">
           <RouterLink to="/">Home</RouterLink> &nbsp;&nbsp;
           <RouterLink to="/about">About</RouterLink> &nbsp;&nbsp;
-<!--          <RouterLink to="/demo2">Demo2</RouterLink>-->
+          <RouterLink to="/demo2">Demo2</RouterLink>
         </el-col>
       </el-row>
     </el-header>
