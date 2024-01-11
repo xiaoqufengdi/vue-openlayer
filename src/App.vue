@@ -10,9 +10,11 @@ import { RouterLink, RouterView } from 'vue-router'
       <el-row class="wrapper">
         <el-col :span="24">
           <RouterLink to="/">Home</RouterLink> &nbsp;&nbsp;
-          <RouterLink to="/about">About</RouterLink> &nbsp;&nbsp;
+          <RouterLink to="/demo1">About</RouterLink> &nbsp;&nbsp;
           <RouterLink to="/demo2">Demo2</RouterLink>&nbsp;&nbsp;
-          <RouterLink to="/demo3">Demo3</RouterLink>
+          <RouterLink to="/demo3">Demo3</RouterLink>&nbsp;&nbsp;
+          <RouterLink to="/demo4">Demo4</RouterLink>&nbsp;&nbsp;
+
         </el-col>
       </el-row>
     </el-header>

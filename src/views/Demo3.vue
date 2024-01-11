@@ -143,7 +143,6 @@ const baiduSourceLabel = new TileImage({
       y = 'M' + (-y);
     }
     return `https://maponline2.bdimg.com/tile/?qt=vtile&x=${x}&y=${y}&z=${z}&styles=sl&v=083&udt=20231212$scaler=1&showtext=1`;
-    // return `https://maponline0.bdimg.com/starpic/?qt=satepc&u=x=${6287};y=${1621};z=${15};v=009;type=sate&fm=46&udt=20231212`;
   },
 });
 
